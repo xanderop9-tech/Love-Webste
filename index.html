@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Do you love me 😡</title><style>
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+  background: linear-gradient(135deg, #ffd6e7, #ffc0cb);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  color: #ff4d88;
+  animation: floatUp linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.5); }
+  100% { transform: translateY(-10vh) scale(1.2); }
+}
+
+/* Card */
+.card {
+  background: rgba(255,255,255,0.85);
+  padding: 40px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  color: #ff4d88;
+  font-size: 40px;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  margin: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* YES button */
+#yes {
+  background: #ff4d88;
+  color: white;
+}
+
+#yes:hover {
+  transform: scale(1.1);
+}
+
+/* NO button */
+#no {
+  background: white;
+  color: #ff4d88;
+  position: relative;
+}
+
+/* Footer */
+.footer {
+  position: absolute;
+  bottom: 10px;
+  font-size: 14px;
+  color: #ff4d88;
+}
+</style></head><body><div class="card" id="main">
+  <h1>Do you love me 😡</h1>
+  <button id="yes">Yes 💖</button>
+  <button id="no">No 😢</button>
+</div><div class="footer">Made by Xander 💕</div><script>
+// Floating hearts
+for (let i = 0; i < 20; i++) {
+  let heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 5) + "s";
+  heart.style.fontSize = (10 + Math.random() * 20) + "px";
+  document.body.appendChild(heart);
+}
+
+// YES button
+document.getElementById("yes").onclick = () => {
+  document.body.innerHTML = `
+    <div class="card">
+      <h1>I love you too 😘</h1>
+      <p style="font-size:20px;">💖 You're stuck with me now 💖</p>
+      <button onclick="location.reload()">Play again</button>
+    </div>
+    <div class="footer">Made by Xander 💕</div>
+  `;
+};
+
+// NO button behavior
+let noSize = 1;
+let noTexts = ["No 😢","No?? 😭","Don't do this 😡","Please 😭","Last chance 😤","...😞"];
+
+document.getElementById("no").onclick = function() {
+  noSize -= 0.1;
+  if(noSize < 0.3) noSize = 0.3;
+
+  this.style.transform = `scale(${noSize})`;
+
+  let x = Math.random() * 300 - 150;
+  let y = Math.random() * 300 - 150;
+
+  this.style.transform += ` translate(${x}px, ${y}px)`;
+
+  let index = Math.min(noTexts.length - 1, Math.floor((1 - noSize) * 10));
+  this.innerText = noTexts[index];
+};
+</script></body>
+</html>
