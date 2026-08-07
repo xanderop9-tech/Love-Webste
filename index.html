@@ -23,7 +23,7 @@ body {
   bottom: -20px;
   animation: floatUp linear infinite;
   color: #ff4d88;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 @keyframes floatUp {
@@ -34,52 +34,61 @@ body {
 
 /* card */
 .card {
+  width: 320px;
   background: rgba(255,255,255,0.9);
-  padding: 40px;
+  padding: 25px;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 15px 40px rgba(0,0,0,0.2);
 }
 
-h1 {
-  color: #ff4d88;
-}
-
 /* photo */
 .my-photo {
-  width: 160px;
-  height: 160px;
+  width: 130px;
+  height: 130px;
   object-fit: cover;
   border-radius: 50%;
-  margin: 15px 0;
-  border: 5px solid #ff4d88;
-  box-shadow: 0 0 20px #ff99cc;
+  margin: 10px 0;
+  border: 4px solid #ff4d88;
+  box-shadow: 0 0 15px #ff99cc;
+}
+
+/* buttons container */
+.btn-area {
+  position: relative;
+  height: 140px;
+  margin-top: 10px;
 }
 
 /* buttons */
 button {
-  padding: 12px 25px;
-  font-size: 18px;
+  padding: 10px 20px;
+  font-size: 16px;
   border: none;
   border-radius: 25px;
-  margin: 10px;
   cursor: pointer;
-  transition: 0.3s;
+  position: absolute;
+  transition: all 0.25s ease;
 }
 
 #yes {
   background: #ff4d88;
   color: white;
+  left: 30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #yes:hover {
-  transform: scale(1.1);
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
 #no {
   background: white;
   color: #ff4d88;
-  position: relative;
+  left: 70%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* footer */
@@ -95,14 +104,14 @@ button {
 <body>
 
 <div class="card">
-  <h1>Do you love me 😡</h1>
+  <h2>Do you love me 😡</h2>
 
-  <!-- YOUR PHOTO -->
   <img src="me.jpg" class="my-photo">
 
-  <br>
-  <button id="yes">Yes 💖</button>
-  <button id="no">No 😤</button>
+  <div class="btn-area" id="area">
+    <button id="yes">Yes 💖</button>
+    <button id="no">No 😤</button>
+  </div>
 </div>
 
 <div class="footer">Made by Xander 💕</div>
@@ -119,34 +128,43 @@ for (let i = 0; i < 25; i++) {
   document.body.appendChild(h);
 }
 
-// YES button
+// YES click
 document.getElementById("yes").onclick = () => {
   document.body.innerHTML = `
     <div class="card">
-      <h1>I love you too 😘</h1>
+      <h2>I love you too 😘</h2>
       <img src="me.jpg" class="my-photo">
-      <p>💖 You're stuck with me now 💖</p>
+      <p>💖 You're mine now 💖</p>
       <button onclick="location.reload()">Play again</button>
     </div>
     <div class="footer">Made by Xander 💕</div>
   `;
 };
 
-// NO button troll
-let size = 1;
-let texts = ["No 😤","No?? 😳","Noooo 😭","Please 🥺","Stop 😡","..."];
+// NO button logic (smooth + safe area)
+const noBtn = document.getElementById("no");
+const area = document.getElementById("area");
 
-document.getElementById("no").onclick = function() {
-  size -= 0.1;
-  if(size < 0.3) size = 0.3;
+let scale = 1;
 
-  let x = Math.random() * 300 - 150;
-  let y = Math.random() * 300 - 150;
+noBtn.onclick = () => {
+  scale -= 0.08;
+  if (scale < 0.4) scale = 0.4;
 
-  this.style.transform = `scale(${size}) translate(${x}px, ${y}px)`;
+  const areaRect = area.getBoundingClientRect();
 
-  let index = Math.min(texts.length - 1, Math.floor((1 - size) * 10));
-  this.innerText = texts[index];
+  const maxX = areaRect.width - 100;
+  const maxY = areaRect.height - 50;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  noBtn.style.transform = `scale(${scale})`;
+
+  const texts = ["No 😤","No?? 😳","Stop 😭","Please 🥺","Don't 😡","..."];
+  noBtn.innerText = texts[Math.floor(Math.random() * texts.length)];
 };
 </script>
 
